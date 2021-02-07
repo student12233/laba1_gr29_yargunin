@@ -69,3 +69,5 @@ womans:-woman(X),write(X),nl,fail.
 children(X):-parent(X,Y),write(Y),nl,fail.
 mother(X, Y):-parent(X,Y),woman(X).
 mother(X):-parent(Y,X),woman(Y),write(Y).
+douther(X,Y):-parent(Y,X),woman(X).
+douther(X):-mother(X,Y),woman(Y),write(Y),nl,fail.
