@@ -82,3 +82,4 @@ grand_pas(X):-parent(Z,X),parent(Y,Z),man(Y),write(Y),nl,fail.
 grand_da(X, Y):-woman(X),parent(Z,X),parent(Y,Z).
 grand_dats(X):-parent(X,Y),parent(Y,Z),woman(Z),write(Z),nl,fail.
 grand_pa_and_son(X,Y):-grand_pa(X,Y),man(Y);grand_pa(Y,X),man(X).
+grand_pa_and_da(X,Y):-grand_da(X,Y),woman(Y);grand_da(Y,X),woman(X).
