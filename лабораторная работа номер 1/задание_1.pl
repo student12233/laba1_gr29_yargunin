@@ -73,3 +73,5 @@ douther(X,Y):-parent(Y,X),woman(X).
 douther(X):-mother(X,Y),woman(Y),write(Y),nl,fail.
 brother(X,Y):-man(X),parent(Z,X),parent(Z,Y).
 brother(X):-parent(Y,X),parent(Y,Z),man(Z),dif(X,Z),write(Z),nl,fail.
+husband(X,Y):-parent(X,Z),parent(Y,Z),man(X).
+husband(X):-parent(X,Y),parent(Z,Y),man(Z),write(Z).
