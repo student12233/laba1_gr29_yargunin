@@ -7,7 +7,6 @@ man(рикки).
 man(алексей).
 man(акакий).
 man(гарри).
-man(павел).
 man(ваня).
 man(вова).
 man(роджер).
@@ -34,7 +33,7 @@ parent(мария,акакий).
 
 parent(михаил,гарри).
 parent(михаил,настя).
-parent(ихаил,алексей).
+parent(михаил,алексей).
 
 parent(алина,гарри).
 parent(алина,настя).
@@ -71,10 +70,10 @@ mother(X,Y):-parent(X,Y),woman(X).
 mother(X):-parent(Y,X),woman(Y),write(Y).
 douther(X,Y):-parent(Y,X),woman(X).
 douther(X):-mother(X,Y),woman(Y),write(Y),nl,fail.
-brother(X,Y):-mother(Z,Y),mother(Z,X),man(X),dif(X,Y).
+brother(X,Y):-parent(Z,Y),parent(Z,X),woman(Z),man(X),dif(X,Y).
 brother(X):-brother(Y,X),write(Y),nl,fail.
 husband(X,Y):-parent(X,Z),parent(Y,Z),man(X).
-husband(X):-parent(X,Y),parent(Z,Y),man(Z),write(Z),!.
+husband(X):-parent(X,Y),parent(Z,Y),man(Z),write(Z).
 b_s(X,Y):-parent(Z,X),parent(Z,Y),dif(X,Y).
 b_s(X):-parent(Z,X),woman(Z),parent(Z,Y),dif(X,Y),write(Y),nl,fail.
 grand_pa(X,Y):-parent(Z,Y),parent(X,Z),man(X).
