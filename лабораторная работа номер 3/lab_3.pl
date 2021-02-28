@@ -34,3 +34,14 @@ kol_del(1,1):-!.
 kol_del(X,I):-X1 is X div 2, kol_del(X,I,2,X1).
 kol_del(_,I,I,1):-!.
 kol_del(X,I,T,W):- (del(X,W),W1 is W-1,T1 is T+1,kol_del(X,I,T1,W1),!);(W1 is W-1,kol_del(X,I,T,W1),!).
+
+posled(I):-posled(1,250000,X),posled(250000,500000,Y),posled(500000,750000,Z),max(X,Y,Z,I1),posled(750000,1000000,I2),max(I1,I2,I).
+
+
+
+posled(X,T,I):-posled(X,T,I,0).
+posled(X,X,I,It):-I = It,!.
+posled(X,T,I,It):-d_13(X,Y,0),(It<Y->I1 = Y;I1 = It),X1 is X+1,posled(X1,T,I,I1).
+d_13(1,K,Kt):-K is Kt +1,!.
+d_13(X,K,Kt):-0 is X mod 2 ->(K1 is Kt+1,X1 is X/2,d_13(X1,K,K1),! );(K1 is Kt+1,X1 is X*3+1,d_13(X1,K,K1),!).
+
