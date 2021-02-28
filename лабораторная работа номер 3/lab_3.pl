@@ -45,3 +45,11 @@ posled(X,T,I,It):-d_13(X,Y,0),(It<Y->I1 = Y;I1 = It),X1 is X+1,posled(X1,T,I,I1)
 d_13(1,K,Kt):-K is Kt +1,!.
 d_13(X,K,Kt):-0 is X mod 2 ->(K1 is Kt+1,X1 is X/2,d_13(X1,K,K1),! );(K1 is Kt+1,X1 is X*3+1,d_13(X1,K,K1),!).
 
+sum_del(1,1):-!.
+sum_del(X,I):- sum_del(X,I,1,X).
+sum_del(_,I,I,1):-!.
+sum_del(X,I,T,W):- (del(X,W),prost(W),W1 is W-1,T1 is T+W,sum_del(X,I,T1,W1),!);(W1 is W-1,sum_del(X,I,T,W1),!).
+
+
+
+
