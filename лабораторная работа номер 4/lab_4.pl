@@ -1,0 +1,8 @@
+plus_c(A,B,[H|T]):-H = A,T = B,!.
+screp([],A,A):-!.
+screp([H|T],A,[H|T2]):-screp(T,A,T2).
+read_list(0,[]):-!.
+read_list(N,X):-read(X1),N1 is N-1,read_list(N1,X2),screp([X1],X2,X).
+write_list([X]):-write(X).
+write_list([X|Y]):-write(X),write_list(Y).
+read_and_write(N):-read_list(N,X),write_list(X).
