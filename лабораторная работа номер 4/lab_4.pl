@@ -37,3 +37,8 @@ vivod_min(N):-read_list(N,L),min_list_down(L,X),write(X).
 in_lest([X|_],X):-!.
 in_lest([_|T],X):-in_lest(T,X).
 
+end_el([H],H):-!.
+end_el([_|T],X):-end_el(T,X).
+revers([],[]):-!.
+revers([H],[H]):-!.
+revers([H|T],[H1|T1]):- end_el([H|T],H1),screp(T2,[H1],[H|T]),revers(T2,T1).
