@@ -24,3 +24,8 @@ check_element(N1,X):-read_list(N1,L),list_el_numb(L,X,N),write(N),!.
 check_element(_,_):-write("элемент не нашелся").
 check_numb(N1,X):-read_list(N1,L),list_el_numb(L,N,X),write(N),!.
 check_numb(_,_):-write("номер не корректен").
+min(X,Y,X):-X<Y,!.
+min(_,Y,Y):-!.
+
+min_list_up([H],H):-!.
+min_list_up([H|T],Min):-min_list_up(T,Min1),min(H,Min1,Min).
