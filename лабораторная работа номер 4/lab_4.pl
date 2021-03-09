@@ -13,9 +13,12 @@ suum_list_down(N):-read_list(N,X),sum_list_down(X,S),write(S).
 sum_list_up([H|T], Summ):-sum_list_up(T, Summ1),Summ is Summ1+H.
 sum_list_up([], 0):-!.
 
-list_el_numb([], _, _):-!.
+list_el_numb([], _, _):-fail,!.
 list_el_numb([H|_],H,1):-!.
 list_el_numb(List, Elem, Number):-list_el(List,Elem,Number,1).
 list_el([],_,_,_):-fail,!.
-list_el([H|_],Elem,Tec_num,Tec_num):-Elem is H,!.
+list_el([H|_],H,Tec_num,Tec_num):-!.
 list_el([_|T],Elem,Num,Tec):-Tec1 is Tec+1,list_el(T,Elem,Num,Tec1).
+
+check_element(N1,X):-read_list(N1,L),list_el_numb(L,X,N),write(N),!.
+check_element(_,_):-write("элемент не нашелся").
