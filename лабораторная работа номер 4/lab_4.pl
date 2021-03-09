@@ -48,3 +48,12 @@ ravenstvo([H|_],[H]):-!.
 ravenstvo([H|T],[H1|T1]):- H is H1 ,ravenstvo(T,T1).
 sravn([H|T],[H1|T1]):-ravenstvo([H|T],[H1|T1]).
 sravn([H|T],[_|T1]):-sravn([H|T],T1).
+
+pos(N,[H|T],[H1|T1]):-pos_n(N,[H|T],[H1|T1],1).
+pos_n(N,[_|T],T,N):-!.
+pos_n(N,[_|T],[H1|T1],Nt):-N1 is Nt+1,pos_n(N,T,[H1|T1],N1).
+pred(N,[H|T],[H1|T1]):-pred_n(N,[H|T],[H1|T1],1).
+pred_n(N,[_|_],[],N):-!.
+pred_n(N,[H|T],[H1|T1],Nt):-N1 is Nt+1,H1 = H,pred_n(N,T,T1,N1).
+
+delete([H|T],I,T2):-pos(I,[H|T],T3),pred(I,[H|T],T4),screp(T4,T3,T2).
