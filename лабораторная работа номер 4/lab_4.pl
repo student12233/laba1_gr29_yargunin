@@ -10,4 +10,6 @@ sum_list_down(List, Summ):-sum(List,0,Summ).
 sum([],S,S):-!.
 sum([H|Ti],T,S):-T1 is T+H,sum(Ti,T1,S).
 suum_list_down(N):-read_list(N,X),sum_list_down(X,S),write(S).
+sum_list_up([H|T], Summ):-sum_list_up(T, Summ1),Summ is Summ1+H.
+sum_list_up([], 0):-!.
 
