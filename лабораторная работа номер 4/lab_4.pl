@@ -22,3 +22,5 @@ list_el([_|T],Elem,Num,Tec):-Tec1 is Tec+1,list_el(T,Elem,Num,Tec1).
 
 check_element(N1,X):-read_list(N1,L),list_el_numb(L,X,N),write(N),!.
 check_element(_,_):-write("элемент не нашелся").
+check_numb(N1,X):-read_list(N1,L),list_el_numb(L,N,X),write(N),!.
+check_numb(_,_):-write("номер не корректен").
