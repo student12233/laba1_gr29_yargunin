@@ -56,4 +56,10 @@ pred(N,[H|T],[H1|T1]):-pred_n(N,[H|T],[H1|T1],1).
 pred_n(N,[_|_],[],N):-!.
 pred_n(N,[H|T],[H1|T1],Nt):-N1 is Nt+1,H1 = H,pred_n(N,T,T1,N1).
 
-delete([H|T],I,T2):-pos(I,[H|T],T3),pred(I,[H|T],T4),screp(T4,T3,T2).
+deletes([H|T],I,T2):-pos(I,[H|T],T3),pred(I,[H|T],T4),screp(T4,T3,T2).
+
+search([H|T],X,I):-sear([H|T],X,I,1).
+sear([X|_],X,I,I):-!.
+sear([_|T],X,I,Tc):-Tc1 is Tc+1,sear(T,X,I,Tc1).
+ydal(Li,X,Li):-not(search(Li,X,_)),!.
+ydal(L,X,Li):-search(L,X,I),delete(L,I,L1),ydal(L1,X,Li).
