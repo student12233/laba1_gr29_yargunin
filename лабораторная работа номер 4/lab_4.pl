@@ -34,3 +34,6 @@ min_d([],Min,Min):-!.
 min_d([H|T],Tec,Min):-min(Tec,H,Tec1),min_d(T,Tec1,Min).
 
 vivod_min(N):-read_list(N,L),min_list_down(L,X),write(X).
+in_lest([X|_],X):-!.
+in_lest([_|T],X):-in_lest(T,X).
+
