@@ -29,3 +29,6 @@ min(_,Y,Y):-!.
 
 min_list_up([H],H):-!.
 min_list_up([H|T],Min):-min_list_up(T,Min1),min(H,Min1,Min).
+min_list_down([H|T],Min):-min_d([H|T],H,Min).
+min_d([],Min,Min):-!.
+min_d([H|T],Tec,Min):-min(Tec,H,Tec1),min_d(T,Tec1,Min).
