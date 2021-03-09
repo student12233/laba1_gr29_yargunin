@@ -42,3 +42,9 @@ end_el([_|T],X):-end_el(T,X).
 revers([],[]):-!.
 revers([H],[H]):-!.
 revers([H|T],[H1|T1]):- end_el([H|T],H1),screp(T2,[H1],[H|T]),revers(T2,T1).
+
+ravenstvo([H],[H|_]):-!.
+ravenstvo([H|_],[H]):-!.
+ravenstvo([H|T],[H1|T1]):- H is H1 ,ravenstvo(T,T1).
+sravn([H|T],[H1|T1]):-ravenstvo([H|T],[H1|T1]).
+sravn([H|T],[_|T1]):-sravn([H|T],T1).
