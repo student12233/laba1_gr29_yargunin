@@ -71,3 +71,5 @@ ynic([X],[X]):-!.
 ynic([H|T],[H|T1]):-kolwo([H|T],H,K),K is 1 ->ynic(T,T1),!.
 ynic([_|T],[H1|T1]):-ynic(T,[H1|T1]).
 
+
+kolwo_el([H|T],X,K):-kolwo([H|T],X,K).
