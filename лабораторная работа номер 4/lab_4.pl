@@ -73,3 +73,6 @@ ynic([_|T],[H1|T1]):-ynic(T,[H1|T1]).
 
 
 kolwo_el([H|T],X,K):-kolwo([H|T],X,K).
+kolwo_elements([H|T],K):-k1([H|T],K,1).
+k1([_],K,K):-!.
+k1([_|T],K,Tt):-T1 is Tt+1,k1(T,K,T1).
