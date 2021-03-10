@@ -76,3 +76,8 @@ kolwo_el([H|T],X,K):-kolwo([H|T],X,K).
 kolwo_elements([H|T],K):-k1([H|T],K,1).
 k1([_],K,K):-!.
 k1([_|T],K,Tt):-T1 is Tt+1,k1(T,K,T1).
+
+d11([X|T],X):- kolwo_el([X|T],X,1),!.
+d11([H|T],X):-neon([H|T],X,H).
+neon([H|_],H,N):-not(H is N),!.
+neon([_|T],X,N):-neon(T,X,N).
