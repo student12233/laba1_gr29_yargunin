@@ -67,6 +67,7 @@ ydal(L,X,Li):-search(L,X,I),delete(L,I,L1),ydal(L1,X,Li).
 kolwo([H|T],X,K):-kol([H|T],X,K,0).
 kol([],_,K,K):-!.
 kol([H|T],X,K,Tec):-(H is X -> T1 is  Tec+1;T1 is Tec),kol(T,X,K,T1).
-ynic([_]):-!.
-ynic([H|T]):-kolwo([H|T],H,K),K is 1,ynic(T).
+ynic([X],[X]):-!.
+ynic([H|T],[H|T1]):-kolwo([H|T],H,K),K is 1 ->ynic(T,T1),!.
+ynic([_|T],[H1|T1]):-ynic(T,[H1|T1]).
 
