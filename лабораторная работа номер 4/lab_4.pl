@@ -118,5 +118,13 @@ min_dx([H|T],Kt,X,K):-H<X->(Kt1 is Kt+1,min_dx(T,Kt1,X,K));min_dx(T,Kt,X,K).
 
 d_42([H|T],Kt):-sred_ar([H|T],M),min_list_x_down([H|T],M,Kt).
 
+max_kolwo([H|T],X):-kolwo_el([H|T],H,K),max_kol([H|T],H,X,K).
+max_kol([],K,K,_).
+max_kol([H|T],Xt,X,Kt):-kolwo_el([H|T],H,K),K>Kt->max_kol(T,H,X,K) ;max_kol(T,Xt,X,Kt).
+max_list_kol([H|T],R):-max_kolwo([H|T],X),mlk([H|T],X,1,[],R).
+mlk([],_,_,T,T):-!.
+mlk([H|T],X,I,Tt,R):-H is X->(screp(Tt,[I],Tt1),I1 is I+1,mlk(T,X,I1,Tt1,R));(I1 is I+1,mlk(T,X,I1,Tt,R)).
+
+
 
 
