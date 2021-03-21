@@ -107,4 +107,6 @@ chered([H|T]):-H>=0->che(T,'-');che(T,'+').
 che([],_):-!.
 che([H|T],'+'):-H>0,che(T,'-').
 che([H|T],'-'):-H<0,che(T,'+').
-
+mach_nechet([],_):-false.
+mach_nechet([H|T],M):-max_list_up([H|T],M),1 is M mod 2.
+mach_nechet([H|T],M):-ind_max([H|T],I),deletes([H|T],I,T2),mach_nechet(T2,M).
