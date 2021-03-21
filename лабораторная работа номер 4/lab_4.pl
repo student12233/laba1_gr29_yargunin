@@ -26,12 +26,19 @@ check_numb(N1,X):-read_list(N1,L),list_el_numb(L,N,X),write(N),!.
 check_numb(_,_):-write("номер не корректен").
 min(X,Y,X):-X<Y,!.
 min(_,Y,Y):-!.
+max(X,Y,X):-X>Y,!.
+max(_,Y,Y):-!.
+
 
 min_list_up([H],H):-!.
 min_list_up([H|T],Min):-min_list_up(T,Min1),min(H,Min1,Min).
 min_list_down([H|T],Min):-min_d([H|T],H,Min).
 min_d([],Min,Min):-!.
 min_d([H|T],Tec,Min):-min(Tec,H,Tec1),min_d(T,Tec1,Min).
+
+max_list_up([H],H):-!.
+max_list_up([H|T],Min):-max_list_up(T,Min1),max(H,Min1,Min).
+
 
 vivod_min(N):-read_list(N,L),min_list_down(L,X),write(X).
 in_lest([X|_],X):-!.
@@ -48,10 +55,11 @@ ravenstvo([H|_],[H]):-!.
 ravenstvo([H|T],[H1|T1]):- H is H1 ,ravenstvo(T,T1).
 sravn([H|T],[H1|T1]):-ravenstvo([H|T],[H1|T1]).
 sravn([H|T],[_|T1]):-sravn([H|T],T1).
-
+pos(N,[H|T],[]):-kolwo_elements([H|T],N),!.
 pos(N,[H|T],[H1|T1]):-pos_n(N,[H|T],[H1|T1],1).
 pos_n(N,[_|T],T,N):-!.
 pos_n(N,[_|T],[H1|T1],Nt):-N1 is Nt+1,pos_n(N,T,[H1|T1],N1).
+pred(1,_,[]):-!.
 pred(N,[H|T],[H1|T1]):-pred_n(N,[H|T],[H1|T1],1).
 pred_n(N,[_|_],[],N):-!.
 pred_n(N,[H|T],[H1|T1],Nt):-N1 is Nt+1,H1 = H,pred_n(N,T,T1,N1).
@@ -63,7 +71,6 @@ sear([X|_],X,I,I):-!.
 sear([_|T],X,I,Tc):-Tc1 is Tc+1,sear(T,X,I,Tc1).
 ydal(Li,X,Li):-not(search(Li,X,_)),!.
 ydal(L,X,Li):-search(L,X,I),delete(L,I,L1),ydal(L1,X,Li).
-
 kolwo([H|T],X,K):-kol([H|T],X,K,0).
 kol([],_,K,K):-!.
 kol([H|T],X,K,Tec):-(H is X -> T1 is  Tec+1;T1 is Tec),kol(T,X,K,T1).
@@ -81,3 +88,15 @@ d11([X|T],X):- kolwo_el([X|T],X,1),!.
 d11([H|T],X):-neon([H|T],X,H).
 neon([H|_],H,N):-not(H is N),!.
 neon([_|T],X,N):-neon(T,X,N).
+
+d12([X|T],[X1|T1]):-ind_min([X|T],I1),ind_max([X|T],I2),I1>I2,sred(I2,I1,[X|T],[X2|T2]),revers([X2|T2],R3),pred(I2,[X|T],R1),list_el_numb([X|T],R2,I2),screp(R1,[R2],R12),screp(R12,R3,R123),list_el_numb([X|T],R4,I1),screp(R123,[R4],R1234),pos(I1,[X|T],R5),screp(R1234,R5,[X1|T1]),!.
+d12([X|T],[X1|T1]):-ind_min([X|T],I1),ind_max([X|T],I2),I1<I2,sred(I1,I2,[X|T],[X2|T2]),revers([X2|T2],R3),pred(I1,[X|T],R1),list_el_numb([X|T],R2,I1),screp(R1,[R2],R12),screp(R12,R3,R123),list_el_numb([X|T],R4,I2),screp(R123,[R4],R1234),pos(I2,[X|T],R5),screp(R1234,R5,[X1|T1]),!.
+
+
+
+
+ind_min([X|T],I):-min_list_up([X|T],X1),list_el_numb([X|T], X1,I).
+ind_max([X|T],I):-max_list_up([X|T],X1),list_el_numb([X|T], X1,I).
+sred(I,I,[_|_],[]):-!.
+sred(I,J,[X|T],[X1|T1]):-pred(I,[X|T],R2),pred(J,[X|T],R3),list_el_numb([X|T],X2,I),screp(R2,[X2],R4),screp(R4,[X1|T1],R3).
+
