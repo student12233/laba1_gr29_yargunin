@@ -125,6 +125,15 @@ max_list_kol([H|T],R):-max_kolwo([H|T],X),mlk([H|T],X,1,[],R).
 mlk([],_,_,T,T):-!.
 mlk([H|T],X,I,Tt,R):-H is X->(screp(Tt,[I],Tt1),I1 is I+1,mlk(T,X,I1,Tt1,R));(I1 is I+1,mlk(T,X,I1,Tt,R)).
 
+delete_all_no_unic([H|T],R,B):-dan([H|T],[H|T],R,1,[],B,[]).
+dan(_,[],R,_,R,BV,BV):-!.
+dan([H1|T1],[H|T],R,I,RT,B,BV):-kolwo_el([H1|T1],H,K),K is 1->(screp(RT,[H],RB),screp(BV,[I],BB),I1 is I+1,dan([H1|T1],T,R,I1,RB,B,BB));(I1 is I+1,dan([H1|T1],T,R,I1,RT,B,BV)).
+delitsi([H|T],K):-delete_all_no_unic([H|T],R,B),delss(R,B,K,0).
+delss([],[],K,K):-!.
+delss([H1|T1],[H2|T2],K,KT):-0 is H1 mod H2->(K1 is KT+1,delss(T1,T2,K,K1));delss(T1,T2,K,KT).
+
+
+
 
 
 
