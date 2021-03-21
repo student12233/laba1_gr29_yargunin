@@ -110,3 +110,13 @@ che([H|T],'-'):-H<0,che(T,'+').
 mach_nechet([],_):-false.
 mach_nechet([H|T],M):-max_list_up([H|T],M),1 is M mod 2.
 mach_nechet([H|T],M):-ind_max([H|T],I),deletes([H|T],I,T2),mach_nechet(T2,M).
+sred_ar([H|T],M):-kolwo_elements([H|T],K),sum_list_up([H|T], Summ),M is Summ / K.
+
+min_list_x_down([H|T],X,K):-min_dx([H|T],0,X,K).
+min_dx([],K,_,K):-!.
+min_dx([H|T],Kt,X,K):-H<X->(Kt1 is Kt+1,min_dx(T,Kt1,X,K));min_dx(T,Kt,X,K).
+
+d_42([H|T],Kt):-sred_ar([H|T],M),min_list_x_down([H|T],M,Kt).
+
+
+
