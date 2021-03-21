@@ -100,3 +100,4 @@ ind_max([X|T],I):-max_list_up([X|T],X1),list_el_numb([X|T], X1,I).
 sred(I,I,[_|_],[]):-!.
 sred(I,J,[X|T],[X1|T1]):-pred(I,[X|T],R2),pred(J,[X|T],R3),list_el_numb([X|T],X2,I),screp(R2,[X2],R4),screp(R4,[X1|T1],R3).
 
+d22([H|T],I,J, K):-sred(I,J,[H|T],R),list_el_numb([X|T],R1,I),list_el_numb([X|T],R2,J),screp([R1],R,R12),screp(R12,[R2],R123),min_list_up(R123,X),kolwo_el(R123,X,K).
