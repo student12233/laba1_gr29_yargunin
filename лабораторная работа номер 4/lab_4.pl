@@ -102,3 +102,9 @@ sred(I,J,[X|T],[X1|T1]):-pred(I,[X|T],R2),pred(J,[X|T],R3),list_el_numb([X|T],X2
 
 d22([H|T],I,J, K):-sred(I,J,[H|T],R),list_el_numb([X|T],R1,I),list_el_numb([X|T],R2,J),screp([R1],R,R12),screp(R12,[R2],R123),min_list_up(R123,X),kolwo_el(R123,X,K).
 d24([H|T],M1,M2):-max_list_up([H|T],M1),ind_max([H|T],I),deletes([H|T],I,T2),max_list_up(T2,M2).
+chered([_]).
+chered([H|T]):-H>=0->che(T,'-');che(T,'+').
+che([],_):-!.
+che([H|T],'+'):-H>0,che(T,'-').
+che([H|T],'-'):-H<0,che(T,'+').
+
