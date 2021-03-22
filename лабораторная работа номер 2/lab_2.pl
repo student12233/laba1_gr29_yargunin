@@ -100,7 +100,7 @@ cinema(игра_престолов,1).
 cinema(имя_ветра,0).
 cinema(принц_Терний,0).
 
-cinema(нейромант,0).
+cinema(нейромант,1).
 cinema(контакт,0).
 cinema(мечтают_ли_андроиды_об_электроовцаx,1).
 cinema(космическая_одиссея,1).
@@ -109,7 +109,7 @@ cinema(игра_Эндера,1).
 cinema(убийство_на_улице_Морг,1).
 cinema(приключения_Шерлока_Холмса,1).
 cinema(снеговик,1).
-cinema(хладнокровное_убийство,2).
+cinema(хладнокровное_убийство,0).
 cinema(исчезнувшая,1).
 
 cinema(оно,1).
@@ -117,3 +117,39 @@ cinema(дракула_Брэма,1).
 cinema(сборник_лучших_произведений_Г_Ф_Лавкрафта,0).
 cinema(призрак_дома_на_холме,1).
 cinema(изгоняющий_дьявола,1).
+
+question1(X1):-	write("какой жанр у книги"),nl,
+				write("1. фантастика"),nl,
+				write("0. фэнтэзи"),nl,
+                                write("2. детектив"),nl,
+                                write("0. ужасы"),nl,
+				read(X1).
+
+question2(X2):-	write("страна афтора книги"),nl,
+				write("0. США"),nl,
+				write("1. Англия"),nl,
+                                write("2.Норвегия "),nl,
+				read(X2).
+
+question3(X3):-	write("есть ли другая часть книги"),nl,
+				write("1. Да"),nl,
+				write("0. Нет"),nl,
+				read(X3).
+
+question4(X4):-	write("дата"),nl,
+				write("3. до 1949"),nl,
+				write("2.с 1950 по 1977"),nl,
+				write("1.с 1980 по 1999"),nl,
+				write("0. с 2000 года"),nl,
+				read(X4).
+
+question5(X5):-	write("есть ли экранизация"),nl,
+				write("1. Yes"),nl,
+				write("0. NO"),nl,
+				read(X5).
+
+
+
+pr:-	question1(X1),question2(X2),question3(X3),question4(X4),
+		question5(X5),genre(X,X1),country(X,X2),seria(X,X3),
+                data(X,X4),cinema(X,X5),write(X),nl,!.
