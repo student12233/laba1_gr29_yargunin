@@ -8,18 +8,18 @@ sub_posl(Sub_list,[_|List]):-sub_posl(Sub_list,List).
 
 sub_set([],[]).
 sub_set([H|Sub_set],[H|Set]):-sub_set(Sub_set,Set).
-sub_set(Sub_set,[H|Set]):-sub_set(Sub_set,Set).
+sub_set(Sub_set,[_|Set]):-sub_set(Sub_set,Set).
 % задание номер 1
 in_list([El|_],El).
 in_list([_|T],El):-in_list(T,El).
 
 
-sprava_next(A,B,[C]):-fail.
-sprava_next(A,B,[A|[B|Tail]]).
+sprava_next(_,_,[_]):-fail.
+sprava_next(A,B,[A|[B|_]]).
 sprava_next(A,B,[_|List]):-sprava_next(A,B,List).
 
-sleva_next(A,B,[C]):-fail.
-sleva_next(A,B,[B|[A|Tail]]).
+sleva_next(_,_,[_]):-fail.
+sleva_next(A,B,[B|[A|_]]).
 sleva_next(A,B,[_|List]):-sleva_next(A,B,List).
 
 next_to(A,B,List):-sprava_next(A,B,List).
@@ -84,6 +84,21 @@ pr_2:-all_lest2_people(R1),all_lest2_pen(R2),
      (list_el_numb(R1,белов,X2),list_el_numb(R2,блондин,Y2)),dif(X2,Y2),
       (list_el_numb(R1,чернов,X3),list_el_numb(R2,брюнет,Y3)),dif(X3,Y3),
       write(R1),nl,write(R2),nl.
+
+% задание номер 3.
+
+pr_3:-Naborr=[_,_,_],
+    in_list(Naborr,[_,_,белый]),
+    in_list(Naborr,[_,_,зеленый]),
+    in_list(Naborr,[_,_,синий]),
+    in_list(Naborr,[_,белый,_]),
+    in_list(Naborr,[_,зеленый,_]),
+    in_list(Naborr,[_,синий,_]),
+    in_list(Naborr,[аня,X1,X1]),
+     in_list(Naborr,[валя,X2,Y2]),dif(X2,Y2),not(X2 = белый),not(Y2 = белый),
+      in_list(Naborr,[наташа,_,зеленый]),
+      write(Naborr).
+
 
 
 
