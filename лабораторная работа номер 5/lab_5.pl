@@ -22,8 +22,7 @@ sleva_next(_,_,[_]):-fail.
 sleva_next(A,B,[B|[A|_]]).
 sleva_next(A,B,[_|List]):-sleva_next(A,B,List).
 
-next_to(A,B,List):-sprava_next(A,B,List).
-next_to(A,B,List):-sleva_next(A,B,List).
+next_to(A,B,List):-sprava_next(A,B,List),!;sleva_next(A,B,List),!.
 
 el_no(List,Num,El):-el_no(List,Num,1,El).
 el_no([H|_],Num,Num,H):-!.
@@ -111,6 +110,26 @@ pr_4:-Nab4=[_,_,_],
 	el_no(Nab4,1,[слесарь,X]),not(X = борисов),
          sprava_next([_,семенов],[токарь,_],Nab4),
          write(Nab4).
+
+% задание номер 5.
+
+pr_5:-N5 =[_,_,_,_],
+    in_list(N5,[бутылка,_]),
+    in_list(N5,[стакан,_]),
+     in_list(N5,[кувшин,_]),
+      in_list(N5,[банка,_]),
+       in_list(N5,[_,молоко]),
+       in_list(N5,[_,лимонад]),
+       in_list(N5,[_,квас]),
+       in_list(N5,[_,вода]),
+    in_list(N5,[бутылка,X]),not(X =молоко),not(X=вода),
+    in_list(N5,[Y,лимонад]),not(Y=кувшин),
+    next_to([_,лимонад],[кувшин,_],N5),
+    next_to([_,лимонад],[U,квас],N5),not(U =кувшин),
+     in_list(N5,[банка,Z]),not(Z =лимонад),not(Z=вода),
+     next_to([стакан,_],[банка,_],N5),
+     next_to([стакан,_],[_,молоко],N5),
+     write(N5),nl.
 
 
 
