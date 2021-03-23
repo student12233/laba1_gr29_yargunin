@@ -98,6 +98,20 @@ pr_3:-Naborr=[_,_,_],
      in_list(Naborr,[валя,X2,Y2]),dif(X2,Y2),not(X2 = белый),not(Y2 = белый),
       in_list(Naborr,[наташа,_,зеленый]),
       write(Naborr).
+% задание номер 4.
+
+pr_4:-Nab4=[_,_,_],
+    in_list(Nab4,[слесарь,_]),
+     in_list(Nab4,[сварщик,_]),
+      in_list(Nab4,[токарь,_]),
+      in_list(Nab4,[_,борисов]),
+     in_list(Nab4,[_,семенов]),
+      in_list(Nab4,[_,иванов]),
+
+	el_no(Nab4,1,[слесарь,X]),not(X = борисов),
+         sprava_next([_,семенов],[токарь,_],Nab4),
+         write(Nab4).
+
 
 
 
