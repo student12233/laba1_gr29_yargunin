@@ -106,3 +106,11 @@ pr6:-read_str(St,_),pr6(St,0).
 pr6([],_):-!.
 pr6([H|T],Count):-Count1 is Count+1,(0 is Count1 mod 3 -> put(H),pr6(T,Count1);pr6(T,Count1)).
 
+pr7:- read_str(List,_), pr7(List,0,0,Z,Zer), write("Znack = "), write(Z), write(","), nl,
+	write("Zero = "), write(Zer), write(".").
+
+pr7([],I,C,I,C):-!.
+pr7([H1,H2|T],I,C,I0,C0):- (H1 = 43; H1 = 45), I1 is I+1,
+	(H2 = 48 -> C1 is C+1, pr7(T,I1,C1,I0,C0); pr7([H2|T],I1,C,I0,C0)),!.
+pr7([H|T],I,C,I0,C0):- (H = 43; H = 45), I1 is I+1, pr7(T,I1,C,I0,C0),!.
+pr7([_|T],I,C,I0,C0):- pr7(T,I,C,I0,C0).
