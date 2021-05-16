@@ -121,3 +121,10 @@ prov_w([Head|Tail],I,Ind):-(Head =:=119 -> Ind is I;I1 is I+1,prov_w(Tail,I1,Ind
 
 prov_x([],_,_):-write("не встречается x"),!,fail.
 prov_x([Head|Tail],I,Ind):-(Head =:=120 -> Ind is I;I1 is I+1,prov_x(Tail,I1,Ind)).
+length_list([],K,K):-!.
+length_list([_|T],K,Kol):-K1 is K+1,length_list(T,K1,Kol).
+
+pr9:-read_str(St1,N1),read_str(St2,N2),(N1>N2 -> N3 is N1-N2,write_raz(N3,St1);N3 is N2-N1,
+		write_raz(N3,St2)).
+write_raz(0,_):-!.
+write_raz(N,St):-write_str(St),N1 is N-1,write_raz(N1,St).
