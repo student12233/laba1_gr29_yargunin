@@ -90,3 +90,15 @@ pr_l([_|T],I,L):- I1 is I+1, pr_l(T,I1,L).
 pr_r(_,0):-!.
 pr_r(H,L):- write_str([H]), L1 is L-1, pr_r(H,L1).
 
+pr5:- read_str(List,L), reverse_list(List,[H|T]), pr5([H|T],List1,H,0,L),
+	write_list(List1).
+
+reverse_list([],List):- reverse_list([],[],List),!.
+reverse_list([Head|Tail],List):- reverse_list([Head|Tail],[],List).
+reverse_list([],List1,List1):-!.
+reverse_list([Head|Tail],List_r, List):- reverse_list(Tail,[Head|List_r],List).
+
+pr5([],[],_,_,_):-!.
+pr5([H1|T1],[H2|T2],H1,I,L):- H2 is L-I-1, I1 is I+1, pr5(T1,T2,H1,I1,L),!.
+pr5([_|T1],List,H,I,L):- I1 is I+1, pr5(T1,List,H,I1,L).
+
