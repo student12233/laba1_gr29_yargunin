@@ -128,3 +128,12 @@ pr9:-read_str(St1,N1),read_str(St2,N2),(N1>N2 -> N3 is N1-N2,write_raz(N3,St1);N
 		write_raz(N3,St2)).
 write_raz(0,_):-!.
 write_raz(N,St):-write_str(St),N1 is N-1,write_raz(N1,St).
+
+pr10:- read_str(List,_),
+	(pr10(List,L1) -> write_str(L1);
+	append_list(List,[122,122,122],L2), write_str(L2)).
+
+pr10([97,98,99|T],[119,119,119|T]):-!.
+append_list([],List2,List2).
+append_list([H|T1],List2,[H|T2]):- append_list(T1,List2,T2).
+
