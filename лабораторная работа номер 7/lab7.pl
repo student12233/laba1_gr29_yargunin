@@ -102,3 +102,7 @@ pr5([],[],_,_,_):-!.
 pr5([H1|T1],[H2|T2],H1,I,L):- H2 is L-I-1, I1 is I+1, pr5(T1,T2,H1,I1,L),!.
 pr5([_|T1],List,H,I,L):- I1 is I+1, pr5(T1,List,H,I1,L).
 
+pr6:-read_str(St,_),pr6(St,0).
+pr6([],_):-!.
+pr6([H|T],Count):-Count1 is Count+1,(0 is Count1 mod 3 -> put(H),pr6(T,Count1);pr6(T,Count1)).
+
