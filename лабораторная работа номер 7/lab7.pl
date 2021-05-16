@@ -78,3 +78,15 @@ el_by_number(A,Ind,El):-el_by_number(A,1,Ind,El).
 el_by_number([],_,_,nil):-!.
 el_by_number([El|_],Ind,Ind,El):-!.
 el_by_number([_|T],I,Ind,El):-I1 is I+1,el_by_number(T,I1,Ind,El).
+
+
+pr4:- read_str([H|T],L), (L>5 -> pr_l([H|T],0,L); pr_r(H,L)).
+
+pr_l([],_,_):-!.
+pr_l([H|T],I,L):- I<3, write_str([H]), I1 is I+1, pr_l(T,I1,L),!.
+pr_l([H|T],I,L):- M is L-I, M<4, write_str([H]), I1 is I+1, pr_l(T,I1,L),!.
+pr_l([_|T],I,L):- I1 is I+1, pr_l(T,I1,L).
+
+pr_r(_,0):-!.
+pr_r(H,L):- write_str([H]), L1 is L-1, pr_r(H,L1).
+
