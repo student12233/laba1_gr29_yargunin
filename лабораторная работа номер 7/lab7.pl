@@ -114,3 +114,10 @@ pr7([H1,H2|T],I,C,I0,C0):- (H1 = 43; H1 = 45), I1 is I+1,
 	(H2 = 48 -> C1 is C+1, pr7(T,I1,C1,I0,C0); pr7([H2|T],I1,C,I0,C0)),!.
 pr7([H|T],I,C,I0,C0):- (H = 43; H = 45), I1 is I+1, pr7(T,I1,C,I0,C0),!.
 pr7([_|T],I,C,I0,C0):- pr7(T,I,C,I0,C0).
+
+pr8:-read_str(A,_),prov_w(A,0,Indw),prov_x(A,0,Indx),(Indw<Indx->write("w גסענוקאועסÿ נאםüרו");write("x סענוקאועסÿ ןונגוו")).
+prov_w([],_,_):-write("םו גסענוקאועסÿ w"),fail,!.
+prov_w([Head|Tail],I,Ind):-(Head =:=119 -> Ind is I;I1 is I+1,prov_w(Tail,I1,Ind)).
+
+prov_x([],_,_):-write("םו גסענוקאועסÿ x"),!,fail.
+prov_x([Head|Tail],I,Ind):-(Head =:=120 -> Ind is I;I1 is I+1,prov_x(Tail,I1,Ind)).
