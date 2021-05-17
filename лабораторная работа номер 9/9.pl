@@ -84,3 +84,15 @@ pre4:- Pos = [0,1,2,3,4], Rez = [_,_,_,_,_],
 	write_list(Rez), nl, fail.
 
 
+del_sub(T,[],T):-!.
+del_sub([H|T1],[H|T2],List):- del_sub(T1,T2,List),!.
+del_sub([H|T1],List,[H|T3]):- del_sub(T1,List,T3).
+pr5:- tell('C:\\d\\репозиторий\\laba1_gr29_yargunin\\лабораторная работа номер 9\\Новый текстовый документ.txt'),not(pre5), told.
+pre5:- Pos = [0,1,2,3,4,5], Rez = [_,_,_,_,_,_],
+	sochet([El1,El2],2,[a,b,c,d,e,f]), del_sub([a,b,c,d,e,f],[El1,El2],A1),
+	sochet(L1_pos,2,Pos), put_letter(Rez,L1_pos,0,El1),
+	del_sub(Pos,L1_pos,Poss),
+	sochet(L2_pos,2,Poss), put_letter(Rez,L2_pos,0,El2),
+	in_list_exlude(A1,El3,A2), put_free(Rez,El3),
+	in_list(A2,El4), put_free(Rez,El4),
+	write_list(Rez), nl, fail.
