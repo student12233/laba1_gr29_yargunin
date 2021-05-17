@@ -143,3 +143,11 @@ pr11:- read_str(List,L), (L>10 -> pr_b(List,List1), write_str(List1);
 pr_b([H1,H2,H3,H4,H5,H6|_],[H1,H2,H3,H4,H5,H6]):-!.
 pr_m(List,List,12):-!.
 pr_m(List,List_1,L):- L1 is L+1, append_list(List,[111],List1), pr_m(List1,List_1,L1).
+
+pr13:- read_str(List,_), pr13(List,List1,0), write_str(List1).
+
+pr13([],[],_):-!.
+pr13([97|T1],[99|T2],I):- 0 is I mod 2, I1 is I+1, pr13(T1,T2,I1),!.
+pr13([98|T1],[99|T2],I):- 0 is I mod 2, I1 is I+1, pr13(T1,T2,I1),!.
+pr13([_|T1],[97|T2],I):- 0 is I mod 2, I1 is I+1, pr13(T1,T2,I1),!.
+pr13([H|T1],[H|T2],I):- I1 is I+1, pr13(T1,T2,I1).
