@@ -182,3 +182,13 @@ pr19:- read_str(List,_), pr19(List,0,C), write("количество = "), write(C).
 pr19([],I,I):-!.
 pr19([97,98,97|T],I,C):- I1 is I+1, pr19(T,I1,C),!.
 pr19([_|T],I,C):- pr19(T,I,C).
+
+pr20:- read_str(List,_), delete_space(List,L1), pr20(L1,L), write_str(L).
+
+pr20([],[]):-!.
+pr20([32,32|T],List):- pr20([32|T],List),!.
+pr20([32,H|T1],[32,H|T2]):- pr20(T1,T2),!.
+pr20([32],List):- pr20([],List),!.
+pr20([H|T1],[H|T2]):- pr20(T1,T2).
+delete_space([32|T],List):- delete_space(T,List),!.
+delete_space(List,List).
