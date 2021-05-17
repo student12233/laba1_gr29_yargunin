@@ -162,3 +162,14 @@ pr15:-read_str(Str,_),pr15(Str).
 pr15([]):-!.
 pr15([H|_]):-H\=97,H\=98,H\=99,!,fail.
 pr15([_|T]):-pr15(T).
+
+pr16:- read_str(List,_), pr16(List,L), write_str(L).
+
+pr16([],[]):-!.
+pr16([119,111,114,100|T1],[108,101,116,116,101,114|T2]):- pr16(T1,T2),!.
+pr16([H|T1],[H|T2]):- pr16(T1,T2).
+
+pr17:-read_str(St,_),delete_abc(St,[],NL),write_str(NL).
+delete_abc([],NL,NL):-!.
+delete_abc([120,97,98,99|T],Buffer,NL):-append_list(Buffer,[97,98,99],BufferN),delete_abc(T,BufferN,NL),!.
+delete_abc([H|T],Buffer,NL):-append_list(Buffer,[H],BufferN),delete_abc(T,BufferN,NL).
