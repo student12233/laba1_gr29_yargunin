@@ -96,3 +96,14 @@ pre5:- Pos = [0,1,2,3,4,5], Rez = [_,_,_,_,_,_],
 	in_list_exlude(A1,El3,A2), put_free(Rez,El3),
 	in_list(A2,El4), put_free(Rez,El4),
 	write_list(Rez), nl, fail.
+
+pr6:- tell('C:\\d\\репозиторий\\laba1_gr29_yargunin\\лабораторная работа номер 9\\Новый текстовый документ.txt'),not(pre6), told.
+pre6:- Pos = [0,1,2,3,4,5,6], Rez = [_,_,_,_,_,_,_],
+	in_list_exlude([a,b,c,d,e,f],El1,A1),
+	in_list_exlude(A1,El2,A2),
+	sochet(L1_pos,2,Pos), put_letter(Rez,L1_pos,0,El1),
+	del_sub(Pos,L1_pos,Poss),
+	sochet(L2_pos,3,Poss), put_letter(Rez,L2_pos,0,El2),
+	in_list_exlude(A2,El3,A3), put_free(Rez,El3),
+	in_list(A3,El4), put_free(Rez,El4),
+	write_list(Rez), nl, fail.
