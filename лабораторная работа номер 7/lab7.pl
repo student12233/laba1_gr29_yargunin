@@ -137,3 +137,9 @@ pr10([97,98,99|T],[119,119,119|T]):-!.
 append_list([],List2,List2).
 append_list([H|T1],List2,[H|T2]):- append_list(T1,List2,T2).
 
+pr11:- read_str(List,L), (L>10 -> pr_b(List,List1), write_str(List1);
+	pr_m(List,List2,L), write_str(List2)).
+
+pr_b([H1,H2,H3,H4,H5,H6|_],[H1,H2,H3,H4,H5,H6]):-!.
+pr_m(List,List,12):-!.
+pr_m(List,List_1,L):- L1 is L+1, append_list(List,[111],List1), pr_m(List1,List_1,L1).
