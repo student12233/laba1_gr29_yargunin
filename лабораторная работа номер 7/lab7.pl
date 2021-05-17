@@ -192,3 +192,21 @@ pr20([32],List):- pr20([],List),!.
 pr20([H|T1],[H|T2]):- pr20(T1,T2).
 delete_space([32|T],List):- delete_space(T,List),!.
 delete_space(List,List).
+
+pr21_1:- write("введите строку."), nl, read_str(List1,_),
+	write("введите разделители."), nl, read_str(List2,_),
+	pr21_1(List1,List2,List), delete_space(List,L1), pr20(L1,L), write_str(L).
+
+pr21_1([],_,[]):-!.
+pr21_1([H|T1],List2,[32|T2]):- in_list(List2,H), pr21_1(T1,List2,T2),!.
+pr21_1([H|T1],List2,[H|T2]):- pr21_1(T1,List2,T2).
+in_list([El|_],El):-!.
+in_list([_|T],El):-in_list(T,El).
+
+pr21_2:- read_str(List,L), pr21_2(List,1,L).
+
+pr21_2([],_,_):-!.
+pr21_2([H|T],1,L):- write_str([H]), nl, pr21_2(T,2,L),!.
+pr21_2([H|T],I,L):- L is (I-1)*2+1, write_str([H]), nl, I1 is I+1, pr21_2(T,I1,L),!.
+pr21_2([H],_,_):- write_str([H]),!.
+pr21_2([_|T],I,L):- I1 is I+1, pr21_2(T,I1,L).
