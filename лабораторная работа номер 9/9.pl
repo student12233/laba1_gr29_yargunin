@@ -139,3 +139,19 @@ pre9:- Pos = [0,1,2,3,4,5,6], Rez = [_,_,_,_,_,_,_], P = [3,4,5,6,7],
 		in_list([b,c,d,e,f],El2), put_free(Rez,El2);
 	(A = 6 -> in_list([b,c,d,e,f],El), put_free(Rez,El); true)))),
 	write_list(Rez), nl, fail.
+pr10:- tell('C:\\d\\репозиторий\\laba1_gr29_yargunin\\лабораторная работа номер 9\\Новый текстовый документ.txt'), not(pre10), told.
+pre10:- Pos = [0,1,2,3,4,5,6], Rez = [_,_,_,_,_,_,_], P = [1,2,3,4],
+	sochet([El1,El2,El3,El4],4,[a,b,c,d,e,f]), in_list_exlude(P,NumEl1,_),
+	sochet(L1_pos,NumEl1,Pos),
+	del_sub(Pos,L1_pos,P1),
+	in_list_exlude(P,NumEl2,_), sochet(L2_pos,NumEl2,P1),
+	del_sub(P1,L2_pos,P2),
+	in_list_exlude(P,NumEl3,_), sochet(L3_pos,NumEl3,P2),
+	del_sub(P2,L3_pos,P3),
+	in_list_exlude(P,NumEl4,_), sochet(L4_pos,NumEl4,P3),
+	7 is NumEl1+NumEl2+NumEl3+NumEl4,
+	put_letter(Rez,L1_pos,0,El1),
+	put_letter(Rez,L2_pos,0,El2),
+	put_letter(Rez,L3_pos,0,El3),
+	put_letter(Rez,L4_pos,0,El4),
+	write_list(Rez), nl, fail.
