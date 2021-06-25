@@ -46,4 +46,10 @@ inline fun<reified T> readFromJsonFile(fileName: String): List<T> {
 fun main()
 {
 
+    val groups_st =  readFromJsonFile<groupClass>("json/groups.json")
+    val proffesors = readFromJsonFile<TeacherClass>("json/professors.json")
+    val jurnall = readFromJsonFile<journal>("json/journal.json")
+
+
+    
 }
