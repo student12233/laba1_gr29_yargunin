@@ -31,4 +31,13 @@ end
 return multt
 end
 
+if ARGV[1]=="клава" then
+	puts "введите массив"
+	string=(STDIN.gets.chomp).split(",").map!{|x| x.to_i}
+else
+	string = File.open(ARGV[2],"r"){ |file| file.read }
+string=string.split(",").map!{|x| x.to_i}
+end
+
+puts eval(ARGV[0]+"(string)")
 
