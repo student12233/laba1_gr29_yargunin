@@ -25,6 +25,13 @@
 puts "какой язык програмированния вам больше нравится"
 lang = STDIN.gets.chomp
 x = if lang =="ruby" then puts "подлиза" else puts "а будет руби" end
+# задание 4
+puts "введите команду руби"
+rub=STDIN.gets.chomp
+eval(rub)
+puts "введите команду os"
+rub=STDIN.gets.chomp
+system(rub)
 
 
 
