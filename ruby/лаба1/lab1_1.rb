@@ -17,10 +17,18 @@
  
  # выводим приветствие
  puts "добрый день #{ARGV[0]}"
+# получаем методы класса String
+ puts String.instance_methods
 
- puts String.class.methods
 
-
+#задание 3
+puts "какой язык програмированния вам больше нравится"
+lang = STDIN.gets.chomp
+if lang == 'ruby' then
+	puts 'подлиза'
+else
+	puts 'скоро будет руби'
+end
 
 
 
