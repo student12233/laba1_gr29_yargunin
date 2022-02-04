@@ -24,11 +24,8 @@
 #задание 3
 puts "какой язык програмированния вам больше нравится"
 lang = STDIN.gets.chomp
-unless lang == 'ruby' then
-	puts 'скоро будет руби'
-else
-	puts 'подлиза'
-end
+puts "подлиза" if lang =="ruby"
+puts "а будет руби"if lang !="ruby"
 
 
 
