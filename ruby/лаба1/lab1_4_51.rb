@@ -17,6 +17,7 @@ else
 string=string.split(",").map!{|x| x.to_i}
 end
 puts method_51_L1(string)
+puts
 puts method_51_L2(string)
 
 

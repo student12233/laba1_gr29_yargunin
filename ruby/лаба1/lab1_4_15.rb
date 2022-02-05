@@ -16,9 +16,9 @@ if ARGV[0]=="клава" then
 	i=(STDIN.gets.chomp).to_i
 else
 	string = File.open(ARGV[1],"r"){ |file| file.read }
-string=string.split(","," ").map!{|x| x.to_i}
+string=string.split(", ").map!{|x| x.to_i}
 i=string.last
 string.delete_at(string.size-1)
 end
-puts method_15(string,i)
+puts method15(string,i)
 
