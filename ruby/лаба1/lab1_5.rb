@@ -7,3 +7,13 @@ end
 def method_16(mass)
 return  mass.sort{|a,b| ["белый","синий","красный"].index(a)<=>["белый","красный","синий"].index(b)}
 end
+
+puts "введите номер задачи"
+number=STDIN.gets.chomp
+puts "введите аргумент"
+arg=STDIN.gets.chomp
+if number=="16" then
+	puts eval ("method_#{number}(#{arg})")
+else
+	puts eval ("method_#{number}(\"#{arg}\")")
+end
