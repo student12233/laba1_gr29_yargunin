@@ -13,6 +13,9 @@ end
 def method2_3(str)
 return str.scan(/[а-я]{1}|[А-Я]{1}/).size
 end
+def method2_8(str)
+return str.scan(/[a-z]{1}/).size
+end
 puts "введите номер задачи"
 number=STDIN.gets.chomp
 puts "введите аргумент"
