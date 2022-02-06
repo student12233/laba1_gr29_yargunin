@@ -16,6 +16,9 @@ end
 def method2_8(str)
 return str.scan(/[a-z]{1}/).uniq
 end
+def method2_16(str)
+return str.scan(/[0-9]{1}/).min
+end
 puts "введите номер задачи"
 number=STDIN.gets.chomp
 puts "введите аргумент"
