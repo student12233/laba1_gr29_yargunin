@@ -7,7 +7,9 @@ end
 def method_16(mass)
 return  mass.sort{|a,b| ["белый","синий","красный"].index(a)<=>["белый","красный","синий"].index(b)}
 end
-
+def method_d(str)
+return str.scan(/(\s|^)+(3[0-1]|0[1-9]|[12][1-9])(\s)+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря){1}(\s)+([1-9][0-9]{3}|[1-9][0-9]{2})/)
+end
 puts "введите номер задачи"
 number=STDIN.gets.chomp
 puts "введите аргумент"
@@ -17,3 +19,7 @@ if number=="16" then
 else
 	puts eval ("method_#{number}(\"#{arg}\")")
 end
+
+
+
+
