@@ -12,13 +12,13 @@ def method_7(mass)
 	 mass.sort_by{|x| (x.scan(/[йцкнгшщзхъфвпрлджчсмтьб]{1}[ёеыаоэяию]{1}/).size-x.scan(/[ёеыаоэяию][йцкнгшщзхъфвпрлджчсмтьб]{1}{1}/).size)**2}
 end
 def method_12(mass)
-mass.sort_by{|x_sort|(((mass.inject(""){|sum,x|sum+=(x+" ")}.max_by{|x_max| mass.inject(""){|sum1,x1|sum1+=(x1+" ")}.scan(x_max).size})/(mass.inject(""){|sum,x|sum+=(x+" ")}.size))-((x_sort.scan(mass.inject(""){|sum,x|sum+=(x+" ")}.max_by{|x_max| mass.inject(""){|sum1,x1|sum1+=(x1+" ")}.scan(x_max)).size)/(x_sort.size)))**2}
+mass.sort_by{|x_sort|  (((mass.inject(""){|sum,x|sum+=(x+" ")}.scan(	mass.inject(""){|sum,x|sum+=(x+" ")}.chars.max_by{|max| mass.inject(""){|sum,x|sum+=(x+" ")}.scan(max).size}).size)/(mass.inject(""){|sum,x|sum+=(x+" ")}.size))-((x_sort.scan(mass.inject(""){|sum,x|sum+=(x+" ")}.chars.max_by{|max| mass.inject(""){|sum,x|sum+=(x+" ")}.scan(max).size}).size)/(x_sort.size)))**2}
 end
 def method_5(mass)
-mass.sort_by{|x_sort| ( ((x_sort.max_by{|x_max| x_sort.scan(x_max).size })/(x_sort.size))-((x_sort.max_by{|x_max| x_sort.scan(x_max).size )/(mass.inject(""){|sum,x|sum+=(x+" ")}.size))) }
+mass.sort_by{|x_sort| ( ((x_sort.scan(x_sort.chars.max_by{|x_max| x_sort.scan(x_max).size }).size)/(x_sort.size))-((x_sort.chars.max_by{|x_max| x_sort.scan(x_max)}.size )/(mass.inject(""){|sum,x|sum+=(x+" ")}.size)))**2 }
 end
 def method_3(mass)
-mass.sort_by{|x_sort| ( ((x_sort.max_by{|x_max| x_sort.scan(x_max).size })/(x_sort.size))-((x_sort.max_by{|x_max| x_sort.scan(x_max).size )/(mass.inject(""){|sum,x|sum+=(x+" ")}.size))) }
+mass.sort_by{|x_sort| ( ((x_sort.scan(x_sort.chars.max_by{|x_max| x_sort.scan(x_max).size }).size)/(x_sort.size))-((x_sort.chars.max_by{|x_max| x_sort.scan(x_max)}.size )/(mass.inject(""){|sum,x|sum+=(x+" ")}.size)))**2 }
 end
 
 
