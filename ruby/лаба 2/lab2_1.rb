@@ -1,12 +1,17 @@
 class Department
-    public attr_accessor :name, :number
+    public attr_accessor :name
+    public attr_reader :number
     def initialize(name,number)
         self.name= name
         self.number= number
         @duties=[]
         @duties_index_now=0
     end
+    def number=(val)
+      @number=val if Department.number?
+    end
     def duties_empty?()
+
       @duties.size==0
     end
     def to_s()
@@ -39,11 +44,14 @@ class Department
       @duties.delete_at(@duties_index_now) if !(self.duties_empty?) 
       @duties_index_now=0
     end
+  def Department.number?(number)
+    return /\+[0-9]{11}/.match?(number)
+  end
 end
 
 
-
-a=Department.new("w","s")
+number="89181311793"
+a=Department.new("w",number)
 puts(a)
 a.duties_add("заняться бизнесом")
 a.duties_add("отдыхать")
