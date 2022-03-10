@@ -1,11 +1,51 @@
 class Department
-    attr_accessor :name, :number
+    public attr_accessor :name, :number
     def initialize(name,number)
         self.name= name
         self.number= number
+        @duties=[]
+        @duties_index_now=0
     end
-    def to_s
-      return "название:#{self.name}  номер телефона:#{self.number}"
+    def ?duties_empty()
+      @duties.size==0
     end
+    def to_s()
+      return "название:#{self.name}  номер телефона:#{self.number}  обязанности:#{self.duties_read}"
+    end
+    def duties_add(dutie)
+      @duties.push(dutie).uniq()!
+    end
+    def duties_read()
+      sum=","
+      @duties.each_with_index do |x,ind| 
+        if(ind==@duties_index_now)
+          sum+="{#{x}},"
+        else
+          sum+="#{x},"
+        end
+      end
+      return sum
+    end
+    def duties_cursor(dutie)
+      @duties_index_now = @duties.find_index(dutie) if @duties.find_index(dutie)!= null
+    end
+    def duties_cursor_read()
+      return @duties[duties_index_now] if  !(self.?duties_empty)
+    end
+    def duties_cursor_update(dutie)
+      @duties[@duties_index_now]=dutie if !dutie in @duties &&  !(self.?duties_empty)
+    end
+    def duties_cursor_delete()
+      @duties.delete_at(@duties_index_now) if !(self.?duties_empty)
+    end
+    
 end
 
+
+
+a=Department.new("w","s")
+puts(a)
+a.duties_add("заняться бизнесом")
+a.duties_add("отдыхать")
+a.duties_add("z z z z")
+puts(a.duties_read)
