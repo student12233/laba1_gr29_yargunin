@@ -1,17 +1,14 @@
 require "yaml"
-
-
-
-
 class Department
     include Comparable 
     public attr_accessor :name
     public attr_reader :number
-    def initialize(name,number,duties=[])
+    def initialize(name,number,duties=[],post_list=[])
         self.name= name
         self.number= number
         @duties=duties
         @duties_index_now=0
+        @post_list=post_list
     end
     def number=(val)
       @number=val if Department.number?(val)
@@ -29,7 +26,7 @@ class Department
       sum=","
       @duties.each_with_index do |x,ind| 
         if(ind==@duties_index_now)
-          sum+="{#{x}},"
+          sum+="[#{x}],"
         else
           sum+="#{x},"
         end
@@ -97,9 +94,9 @@ class Department_list
     @Department_list.push(department) if !(@Department_list.include?(department))
   end
   def Department_cursor_delete()
-    if !(self.duties_empty?) 
-    @Department_list.delete(self.Department_cursor) 
-    @Department_list =nil 
+    if !(self.isempty?) 
+    @Department_list.delete(self.Departments_cursor ) 
+    self.Departments_cursor= nil 
     end
   end
   def Department_read()
@@ -112,19 +109,19 @@ class Department_list
   end
   def Department_cursor_update(val)
     if  !@Department_list.include?(val)
-      @Department_list[@Department_list.find_index{|x| x==Departments_cursor}]= val
+      @Department_list[@Department_list.find_index{|x| x==self.Departments_cursor}]= val
       self.Departments_cursor= val
     end
   end
   def Department_list.import_from_txt(href)
     departments= File.open(href,"r"){|file| file.read}
-    departments=departments.scan(/\{[0-9a-zA-Z+а-яА-Я:<>, ]+\}/)
+    departments=departments.scan(/\{[0-9a-zA-Z+а-яА-Я:<>\[\], ]+\}/)
     dep_list=[]
     departments.each do |x|   
-      mass_el = x.scan(/\<[0-9а-яА-Яa-zA-Z,+ ]+\>/)
+      mass_el = x.scan(/\<[0-9а-яА-Яa-zA-Z,+\[\] ]+\>/)
       name=mass_el[0][1...-1]
       numb=mass_el[1][1...-1]
-      mass_duties=mass_el[2][1...-1].split(",")
+      mass_duties=mass_el[2][1...-1].split(/[\,\]\[]+/).select{|x| x.size()>0}
       dep = Department.new(name,numb)
       mass_duties.each{|y| dep.duties_add(y)}
       dep_list.push(dep)
@@ -157,19 +154,163 @@ class Department_list
     new(mass_dept)
   end
 end
+class Post
+  include Comparable
+  attr_reader :department,:name,:salary,:isfree
+  def initialize(department,name,salary,isfree)
+    self.department= department
+    self.name= name
+    self.salary=salary
+    self.isfree=isfree
+  end
+  def Post.isPost?(department,name,salary,isfree)
+    department.is_a?(String) & name.is_a?(String) & salary.is_a?(Integer) & (isfree.is_a?(TrueClass)|isfree.is_a?(FalseClass))
+  end
+   def Post.is_departments?(val)
+    Post.isPost?(val," ",1,true)
+  end
+   def Post.is_name?(val)
+    Post.isPost?("department",val,1,true)
+  end
+   def Post.is_salary?(val)
+    Post.isPost?("department","name",val,true)
+  end
+   def Post.is_isfree?(val)
+    Post.isPost?("department","name",1,val)
+  end
+  def department=(val)
+    @department=val if Post.is_departments?(val)
+  end
+  def name=(val)
+    @name =val if Post.is_name?(val)
+  end
+  def salary=(val) 
+    @salary = val if  Post.is_salary?(val)
+  end
+  def isfree=(val)
+    @isfree = val if  Post.is_isfree?(val)
+  end
+  def to_s()
+    tf={
+      true=>"да",
+      false=>"нет"
+    }
+    "Должность:#{self.name} отдел:#{self.department} зарплата:#{self.salary} занята: #{tf[self.isfree]}"
+  end
+  def <=>(val)
+  return 0  if (self.name== val.name) & (self.department== val.department)
+  return 1 if self.isfree &  !val.isfree
+  return -1
+  end
+  def as_hash 
+    {
+      "department"=>self.department,
+      "name"=>self.name,
+      "salary"=>self.salary,
+      "isfree"=>self.isfree
+    }
+  end
+end
+class Post_list
+  include Enumerable
+  def initialize(posts=[])
+    @post_list=posts if Post_list.is_Post?(posts) || posts.size==0
+    self.post_cursor= nil
+  end
+  def Post_list.is_Post?(posts)
+    c=true
+    posts.each{|x| c=false if !x.is_a?(Post)}
+    return c
+  end
+  def each()
+    for i in @post_list do
+      yield i
+    end
+  end
+  def isempty?()
+    @post_list.size==0
+  end
+  def post_cursor=(val)
+    @post_cursor=@post_list.find{|x| x.name== val} if !(self.isempty?)
+  end
+  def post_cursor()
+    return @post_cursor
+  end
+  def post_add(post)
+    @post_list.push(post) 
+  end
+  def post_cursor_delete()
+    if !(self.isempty?) 
+      @post_list.delete(self.post_cursor) 
+       self.post_cursor=nil 
+    end
+  end
+  def post_read()
+    sum=""
+    self.each{|x| sum+=(x.to_s+"\n")}
+    return sum
+  end
+  def post_cursor_read()
+    self.post_cursor.to_s
+  end
+  def post_cursor_update(val)
+      @post_list[@post_list.find_index{|x| x==self.post_cursor}]= val
+      self.post_cursor= val.name 
+  end
+  def to_s()
+    self.post_read()
+  end
+  end
+
+
+
+
+
+
+
+
+
 number="+89181311793"
 a=Department.new("A",number)
 b=Department.new("A","+89181311794")
 c=Department.new("Z","+89181311795")
 deps = Department_list.new()
+a.duties_add("работать")
 deps.Departments_add(a)
 deps.Departments_add(b)
 deps.Departments_add(c)
 deps.Departments_cursor="A"
+puts(deps)
+deps.Departments_cursor.duties_add("не работать")
+puts(deps)
+deps.Departments_cursor= "Z"
+puts(deps.Departments_cursor)
+deps.Department_cursor_delete()
+puts(deps)
+
+
 deps.export_from_txt("text.txt")
 di = Department_list.import_from_txt("text.txt")
 di.Departments_cursor= "Z"
 di.export_from_YAML("ya.yaml")
 ro =Department_list.import_from_YAML("ya.yaml")
-puts(ro)
+po1= Post.new("отдел продаж","продажник",2001,true)
+po2= Post.new("отдел закупок","закупщик",5000,true)
+po3= Post.new("клеар","уборщик",10000,false)
+po = Post_list.new()
+po.post_add(po1)
+po.post_add(po2)
+po.post_add(po3)
+puts(po)
+po.post_cursor= "продажник"
+puts(po.post_cursor)
+po.post_cursor="уборщик"
+po.post_cursor_delete()
+puts(po)
+po.post_cursor="продажник"
+po.post_cursor_update(po3)
+puts(po)
+puts(po.post_cursor)
+
+
 
