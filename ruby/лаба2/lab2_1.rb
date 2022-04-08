@@ -3,12 +3,12 @@ class Department
     include Comparable 
     public attr_accessor :name
     public attr_reader :number
-    def initialize(name,number,duties=[],post_list=[])
+    def initialize(name,number,duties=[],post_list=Post_list.new())
         self.name= name
         self.number= number
         @duties=duties
         @duties_index_now=0
-        @post_list=post_list
+        @post_list=post_list if Post_list.is_Post?(post_list)
     end
     def number=(val)
       @number=val if Department.number?(val)
@@ -61,8 +61,33 @@ class Department
       {
         "name"=> self.name,
         "number"=> self.number,
-        "duties"=> @duties
+        "duties"=> @duties,
+        "posts"=>@post_list.mass_hash
       }
+    end
+    def to_s_full()
+      self.to_s()+" "+@post_list.to_s()
+    end
+    def post_cursor=(val)
+      @post_list.post_cursor=(val)
+    end
+    def post_cursor()
+      @post_list.post_cursor
+    end
+    def post_add(val)
+      @post_list.post_add(val)
+    end
+    def post_cursor_update(val)
+      @post_list.post_cursor_update(val)
+    end
+    def post_cursor_delete()
+      @post_list.post_cursor_delete()
+    end
+    def post_read()
+      @post_list.post_read()
+    end
+    def post_free()
+      @post_list.select{|x| x.isfree == false}
     end
 end
 class Department_list
@@ -114,22 +139,21 @@ class Department_list
     end
   end
   def Department_list.import_from_txt(href)
-    departments= File.open(href,"r"){|file| file.read}
-    departments=departments.scan(/\{[0-9a-zA-Z+а-яА-Я:<>\[\], ]+\}/)
-    dep_list=[]
-    departments.each do |x|   
-      mass_el = x.scan(/\<[0-9а-яА-Яa-zA-Z,+\[\] ]+\>/)
-      name=mass_el[0][1...-1]
-      numb=mass_el[1][1...-1]
-      mass_duties=mass_el[2][1...-1].split(/[\,\]\[]+/).select{|x| x.size()>0}
-      dep = Department.new(name,numb)
-      mass_duties.each{|y| dep.duties_add(y)}
-      dep_list.push(dep)
-    end
-    new(dep_list)
+    name=href[0,href.index(".")]
+    name=name+".yaml"
+    puts( system("del #{name}"))
+    puts(system("ren #{href} #{name}"))
+    rez=Department_list.import_from_YAML(name)
+    puts( system("del #{href}"))
+    puts(system("ren #{name} #{href}"))
+    rez
   end
   def export_from_txt(href)
-      File.open(href, 'w'){ |file| file.write @Department_list.inject(""){|sum,x| sum+"{name:<#{x.name}> number:<#{x.number}> duties:<#{x.duties_read()}>}\n"}}
+    name=href[0,href.index(".")]
+    name=name+".yaml"
+    self.export_from_YAML(name)
+   puts ( system("del #{href}"))
+   puts( system("ren #{name} #{href}"))
   end
   def to_s()
     self.Department_read()
@@ -148,10 +172,17 @@ class Department_list
       name=x["name"]
       number=x["number"]
       duties=x["duties"]
-      dep= Department.new(name,number,duties)
+      posts=Post_list.new()
+      x["posts"].each{|y| posts.post_add(Post.new(y["department"],y["name"],y["salary"],y["isfree"]) )}
+      dep= Department.new(name,number,duties,posts)
       mass_dept.push(dep)
     end
     new(mass_dept)
+  end
+  def to_s_full()
+    sum=""
+    self.each{|x| sum+=(x.to_s_full()+"\n")}
+    return sum
   end
 end
 class Post
@@ -198,7 +229,6 @@ class Post
     "Должность:#{self.name} отдел:#{self.department} зарплата:#{self.salary} занята: #{tf[self.isfree]}"
   end
   def <=>(val)
-  return 0  if (self.name== val.name) & (self.department== val.department)
   return 1 if self.isfree &  !val.isfree
   return -1
   end
@@ -237,7 +267,7 @@ class Post_list
     return @post_cursor
   end
   def post_add(post)
-    @post_list.push(post) 
+    @post_list.push(post)  if !(@post_list.include?(post))
   end
   def post_cursor_delete()
     if !(self.isempty?) 
@@ -259,6 +289,11 @@ class Post_list
   end
   def to_s()
     self.post_read()
+  end
+  def mass_hash()
+    list = []
+    @post_list.each{|x| list.push(x.as_hash)}
+    return list
   end
   end
 
@@ -287,8 +322,6 @@ deps.Departments_cursor= "Z"
 puts(deps.Departments_cursor)
 deps.Department_cursor_delete()
 puts(deps)
-
-
 deps.export_from_txt("text.txt")
 di = Department_list.import_from_txt("text.txt")
 di.Departments_cursor= "Z"
@@ -311,6 +344,20 @@ po.post_cursor="продажник"
 po.post_cursor_update(po3)
 puts(po)
 puts(po.post_cursor)
-
-
-
+puts "\n\n\n\n\n"
+puts(po)
+puts "\n\n\n\n\n"
+puts(ro)
+ro.Departments_cursor="A"
+puts(ro.Departments_cursor)
+ro.Departments_cursor.post_add(po1)
+ro.Departments_cursor.post_add(po2)
+ro.Departments_cursor.post_add(po3)
+puts()
+puts(ro.to_s_full)
+ro.export_from_txt("text.txt")
+ro.export_from_YAML("ya.yaml")
+ro11 = Department_list.import_from_YAML("ya.yaml")
+puts(ro11.to_s_full)
+ro11.Departments_cursor="A"
+puts(ro11.Departments_cursor.post_free)
