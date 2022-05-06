@@ -189,9 +189,10 @@ class Post
   include Comparable
   attr_reader :department,:name,:salary,:isfree
   def initialize(department,name,salary,isfree)
+    @sal_creator= Salary_constructor.new()
     self.department= department
     self.name= name
-    self.salary=salary
+    self.salary=  salary
     self.isfree=isfree
   end
   def Post.isPost?(department,name,salary,isfree)
@@ -216,10 +217,13 @@ class Post
     @name =val if Post.is_name?(val)
   end
   def salary=(val) 
-    @salary = val if  Post.is_salary?(val)
+    @salary = @sal_creator.create_salary(val).get_salary 
   end
   def isfree=(val)
     @isfree = val if  Post.is_isfree?(val)
+  end
+  def salary
+    @salary
   end
   def to_s()
     tf={
@@ -236,9 +240,89 @@ class Post
     {
       "department"=>self.department,
       "name"=>self.name,
-      "salary"=>self.salary,
+      "salary"=>@sal_creator.salary_param,
       "isfree"=>self.isfree
     }
+  end
+  class Salary_constructor
+    attr_accessor :salary_param
+    def initialize()
+      
+    end
+    def create_salary(hash={})
+      self.salary_param=hash
+      salary= Fix_sal.new(hash[:fixsal])
+      salary=Rub_sal.new(salary,hash[:rub_sal])
+      salary=Percent_sal.new(salary,hash[:percent_sal])
+      salary=Fine_sal.new(salary,hash[:fine_sal])
+      salary=Prem_sal.new(salary,hash[:prem_sal])
+      salary
+    end
+  class Salary
+    def get_salary()
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  end
+  class Fix_sal < Salary
+    def initialize(fixed)
+      @fixed =fixed
+    end
+    def get_salary()
+      @fixed
+    end
+  end
+  class Decorator_salary < Salary
+    attr_accessor :salary
+    def initialize(salary)
+      self.salary=salary
+    end
+    def get_salary
+      self.salary.get_salary
+    end
+  end
+  class Rub_sal < Decorator_salary
+    def initialize(salary,add_rub)
+      @add_rub=add_rub
+      super(salary)
+    end
+    def get_salary()
+      self.salary.get_salary + @add_rub
+    end
+  end
+  class Percent_sal < Decorator_salary
+    def initialize(salary,percent)
+      super(salary)
+      @percent=percent
+    end
+    def get_salary()
+      r=rand() 
+      salary=self.salary.get_salary
+     return salary + salary*@percent/100 if r<0.5
+     return salary
+    end
+  end
+  class Fine_sal < Decorator_salary
+    def initialize(salary,fine)
+      super(salary)
+      @fine=fine
+    end
+    def get_salary()
+      self.salary.get_salary -  @fine
+    end
+  end
+  class Prem_sal < Decorator_salary
+    def initialize(salary,percent)
+      super(salary)
+      @percent=percent
+    end
+    def get_salary()
+      salary=self.salary.get_salary
+     return salary + salary*@percent/100
+    end
+  end
+  end
+  def get_salary(val)
+     @salary= @sal_creator.create_salary(val).get_salary
   end
 end
 class Post_list
@@ -296,66 +380,6 @@ class Post_list
     return list
   end
   end
-class Salary
-  def get_salary()
-    raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
-  end
-end
-class Fix_sal < Salary
-  def initialize(fixed)
-    @fixed =fixed
-  end
-  def get_salary()
-    @fixed
-  end
-end
-class Decorator_salary < Salary
-  attr_accessor :salary
-  def initialize(salary)
-    self.salary=salary
-  end
-  def get_salary
-    self.salary.get_salary
-  end
-end
-class Rub_sal < Decorator_salary
-  def initialize(salary,add_rub)
-    super(salary)
-    @add_rub=add_rub
-  end
-  def get_salary()
-    self.salary.get_salary + @add_sub
-  end
-end
-class Percent_sal < Decorator_salary
-  def initialize(salary,percent)
-    super(salary)
-    @percent=percent
-  end
-  def get_salary()
-    r=rand() 
-   return self.salary.get_salary + self.salary.get_salary*@percent/100 if r<0.5
-   return self.salary.get_salary
-  end
-end
-class Fine_sal < Decorator_salary
-  def initialize(salary,fine)
-    super(salary)
-    @fine=fine
-  end
-  def get_salary()
-    self.salary.get_salary -  @fine
-  end
-end
-class Prem_sal < Decorator_salary
-  def initialize(salary,percent)
-    super(salary)
-    @percent=percent
-  end
-  def get_salary()
-   return self.salary.get_salary + self.salary.get_salary*@percent/100
-  end
-end
 
 
 
@@ -363,61 +387,64 @@ end
 
 
 
-
-
-number="+89181311793"
-a=Department.new("A",number)
-b=Department.new("A","+89181311794")
-c=Department.new("Z","+89181311795")
-deps = Department_list.new()
-a.duties_add("работать")
-deps.Departments_add(a)
-deps.Departments_add(b)
-deps.Departments_add(c)
-deps.Departments_cursor="A"
-puts(deps)
-deps.Departments_cursor.duties_add("не работать")
-puts(deps)
-deps.Departments_cursor= "Z"
-puts(deps.Departments_cursor)
-deps.Department_cursor_delete()
-puts(deps)
-deps.export_from_txt("text.txt")
-di = Department_list.import_from_txt("text.txt")
-di.Departments_cursor= "Z"
-di.export_from_YAML("ya.yaml")
-ro =Department_list.import_from_YAML("ya.yaml")
-po1= Post.new("отдел продаж","продажник",2001,true)
-po2= Post.new("отдел закупок","закупщик",5000,true)
-po3= Post.new("клеар","уборщик",10000,false)
-po = Post_list.new()
-po.post_add(po1)
-po.post_add(po2)
-po.post_add(po3)
-puts(po)
-po.post_cursor= "продажник"
-puts(po.post_cursor)
-po.post_cursor="уборщик"
-po.post_cursor_delete()
-puts(po)
-po.post_cursor="продажник"
-po.post_cursor_update(po3)
-puts(po)
-puts(po.post_cursor)
-puts "\n\n\n\n\n"
-puts(po)
-puts "\n\n\n\n\n"
-puts(ro)
-ro.Departments_cursor="A"
-puts(ro.Departments_cursor)
-ro.Departments_cursor.post_add(po1)
-ro.Departments_cursor.post_add(po2)
-ro.Departments_cursor.post_add(po3)
-puts()
-puts(ro.to_s_full)
-ro.export_from_txt("text.txt")
-ro.export_from_YAML("ya.yaml")
-ro11 = Department_list.import_from_YAML("ya.yaml")
-puts(ro11.to_s_full)
-ro11.Departments_cursor="A"
-puts(ro11.Departments_cursor.post_free)
+# number="+89181311793"
+# a=Department.new("A",number)
+# b=Department.new("A","+89181311794")
+# c=Department.new("Z","+89181311795")
+# deps = Department_list.new()
+# a.duties_add("работать")
+# deps.Departments_add(a)
+# deps.Departments_add(b)
+# deps.Departments_add(c)
+# deps.Departments_cursor="A"
+# puts(deps)
+# deps.Departments_cursor.duties_add("не работать")
+# puts(deps)
+# deps.Departments_cursor= "Z"
+# puts(deps.Departments_cursor)
+# deps.Department_cursor_delete()
+# puts(deps)
+# deps.export_from_txt("text.txt")
+# di = Department_list.import_from_txt("text.txt")
+# di.Departments_cursor= "Z"
+# di.export_from_YAML("ya.yaml")
+# ro =Department_list.import_from_YAML("ya.yaml")
+# po1= Post.new("отдел продаж","продажник",2001,true)
+# po2= Post.new("отдел закупок","закупщик",5000,true)
+# po3= Post.new("клеар","уборщик",10000,false)
+# po = Post_list.new()
+# po.post_add(po1)
+# po.post_add(po2)
+# po.post_add(po3)
+# puts(po)
+# po.post_cursor= "продажник"
+# puts(po.post_cursor)
+# po.post_cursor="уборщик"
+# po.post_cursor_delete()
+# puts(po)
+# po.post_cursor="продажник"
+# po.post_cursor_update(po3)
+# puts(po)
+# puts(po.post_cursor)
+# puts "\n\n\n\n\n"
+# puts(po)
+# puts "\n\n\n\n\n"
+# puts(ro)
+# ro.Departments_cursor="A"
+# puts(ro.Departments_cursor)
+# ro.Departments_cursor.post_add(po1)
+# ro.Departments_cursor.post_add(po2)
+# ro.Departments_cursor.post_add(po3)
+# puts()
+# puts(ro.to_s_full)
+# ro.export_from_txt("text.txt")
+# ro.export_from_YAML("ya.yaml")
+# ro11 = Department_list.import_from_YAML("ya.yaml")
+# puts(ro11.to_s_full)
+# ro11.Departments_cursor="A"
+# puts(ro11.Departments_cursor.post_free)
+sal={fixsal:200,rub_sal: 30,percent_sal: 10,fine_sal: 100,prem_sal: 20}
+post = Post.new("отдел продаж","менеджер",sal,true)
+puts(post.salary)
+puts(post.as_hash)
+puts(post)
