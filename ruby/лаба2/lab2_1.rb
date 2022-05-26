@@ -1,5 +1,5 @@
 require "yaml"
-class Department
+clss Department
     include Comparable 
     public attr_accessor :name
     public attr_reader :number
@@ -324,6 +324,17 @@ class Post
   def get_salary(val)
      @salary= @sal_creator.create_salary(val).get_salary
   end
+  def set_job_list(val)
+    @job_list=val
+  end
+  def new_jobs(employee,stavka)
+    job= Job.new(self,employee,Time.new.inspect,end_work="empty",stawka)
+    @job_list.push(job)
+  end
+  def delete_jobs(employee)
+    @job_list.select{|x| x.pasport==employee.pasport}.map{|x| x.end_work=Time.new.inspect}
+  end
+  
 end
 class Post_list
   include Enumerable
@@ -381,7 +392,127 @@ class Post_list
   end
   end
 
-
+  class Employee
+    attr_reader :name,:sename,:father_name,:date_burth,:pasport,:phone
+    def initialize(name,sename,father_name,date_burth,pasport,phone)
+      self.name= name
+      self.sename= sename
+      self.father_name= father_name
+      self.date_burth= date_burth
+      self.pasport= pasport
+      self.phone= phone 
+    end
+    def Employee.is_name?(val)
+      val.is_a?(String)
+    end
+    def Employee.is_sename?(val)
+      val.is_a?(String)
+    end
+    def Employee.is_father_name?(val)
+      val.is_a?(String)
+    end
+    def Employee.is_date_burth?(val)
+      val.match?(/((0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})\.(0[1-9]{1}|1[0-2]{1})\.(19[0-9]{2}|2[0-9]{3}))/)
+    end
+    def Employee.is_pasport?(val)
+      val.match?(/[0-9]{6}/)
+    end
+    def Employee.is_phone?(val)
+      val.match?(/\+[0-9]{11}/)
+    end
+    def name=(val)
+      @name=val if Employee.is_name?(val)
+    end
+    def sename=(val)
+      @sename=val Employee.is_sename?(val)
+    end
+    def father_name=(val)
+      @father_name=val Employee.is_father_name?(val)
+    end
+    def date_burth=(val)
+      @date_burth =val Employee.is_date_burth?(val)
+    end
+    def pasport=(val) 
+      @pasport =val Employee.is_pasport?(val)
+    end
+    def phone=(val)
+      @phone =val Employee.is_phone?(val)
+    end
+  end
+  class Skilled_employee < Employee
+    attr_reader :xp,:description
+    def initialize(name,sename,father_name,date_burth,pasport,phone,xp,description)
+      self.xp=xp
+      self.description=description
+      super(name,sename,father_name,date_burth,pasport,phone)
+    end
+    def xp=(val) 
+      @pasport =val Employee.is_xp?(val)
+    end
+    def description=(val)
+      @phone =val Employee.is_description?(val)
+    end
+    def Employee.is_xp?(val)
+      val.is_a?(Integer)
+    end
+    def Employee.is_description?(val)
+      val.is_a?(String)
+    end
+  end
+  
+  
+  class Employee_list
+    include Enumerable
+    def initialize(employees=[])
+      @employee_list=employees 
+    end
+  
+    def each()
+      for i in @employee_list do
+        yield i
+      end
+    end
+  
+  end
+  
+  class Job
+    attr_accessor :post,:employee,:start_work,:end_work,:stawka
+    def initialize(post,employee,start_work,end_work="empty",stawka)
+      self.post= post
+      self.employee= employee
+      self.start_work= start_work
+      self.end_work= end_work
+      self.stawka= stawka
+    end
+    def as_hash
+      {
+        "order"=> self.order,
+        "employee"=> self.employee,
+        "start_work"=> self.start_work,
+        "end_work"=> self.end_work,
+        "stawka"=>self.stawka
+      }
+    end
+  end
+  
+  class Job_list
+    include Enumerable
+    def initialize(jobs=[])
+      @jobs_list=jobs 
+    end
+  
+    def each()
+      for i in @jobs_list do
+        yield i
+      end
+    end
+    def mass_hash()
+      list = []
+      @post_list.each{|x| list.push(x.as_hash)}
+      return list
+    end
+  end
+  
 
 
 
